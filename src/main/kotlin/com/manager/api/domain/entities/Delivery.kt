@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 data class Delivery(
     @field:Id
     @field:GeneratedValue
-    var id: Long,
+    var id: Long? = null,
 
     @field:Column(name = "titulo")
     var title: String,
@@ -27,13 +27,13 @@ data class Delivery(
     var requesterId: Long,
 
     @field:Column(name = "revisor_id", nullable = true)
-    var reviewerId: Long,
+    var reviewerId: Long? = null,
 
     @field:CreationTimestamp
     @field:Column(name = "data_criacao")
-    var createdAt: LocalDateTime,
+    var createdAt: LocalDateTime = LocalDateTime.now(),
 
     @field:UpdateTimestamp
     @field:Column(name = "data_atualizacao")
-    var updatedAt: LocalDateTime
+    var updatedAt: LocalDateTime = LocalDateTime.now(),
 )
