@@ -5,12 +5,15 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("io.micronaut.application") version "4.4.4"
     id("io.micronaut.aot") version "4.4.4"
+
+    kotlin("plugin.jpa") version "1.9.25"
 }
 
-version = "0.1"
+version = "0.0.1"
 group = "com.manager.api"
 
 val kotlinVersion = project.properties.get("kotlinVersion")
+
 repositories {
     mavenCentral()
 }
@@ -22,6 +25,7 @@ dependencies {
     implementation("io.micronaut.serde:micronaut-serde-jackson")
     implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
+    implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
     compileOnly("io.micronaut:micronaut-http-client")
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -32,6 +36,7 @@ dependencies {
 application {
     mainClass = "com.manager.api.ApplicationKt"
 }
+
 java {
     sourceCompatibility = JavaVersion.toVersion("21")
 }
