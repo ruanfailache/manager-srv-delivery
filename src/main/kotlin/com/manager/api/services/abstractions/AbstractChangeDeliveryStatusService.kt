@@ -13,6 +13,7 @@ import io.micronaut.transaction.annotation.Transactional
 abstract class AbstractChangeDeliveryStatusService(
     private val status: DeliveryStatus,
     private val auditLogEvent: DeliveryAuditLogEvent,
+    private val description: String,
     private val deliveryAuditLogClient: DeliveryAuditLogClient,
     private val deliveryRepository: DeliveryRepository,
     private val validateDeliveryDraftService: ValidateDeliveryDraftService
@@ -34,7 +35,8 @@ abstract class AbstractChangeDeliveryStatusService(
         val auditLogRequest = RegisterDeliveryAuditLogRequest(
             deliveryId = deliveryId,
             userId = userId,
-            event = auditLogEvent
+            event = auditLogEvent,
+            description = description
         )
         deliveryAuditLogClient.register(auditLogRequest)
     }

@@ -1,6 +1,7 @@
 package com.manager.api.services.impl
 
 import com.manager.api.clients.DeliveryAuditLogClient
+import com.manager.api.domain.constants.AuditLogMessage
 import com.manager.api.domain.enums.DeliveryAuditLogEvent
 import com.manager.api.domain.enums.DeliveryStatus
 import com.manager.api.domain.repositories.DeliveryRepository
@@ -18,6 +19,7 @@ class StartDeliveryAnalysisServiceImpl(
     AbstractChangeDeliveryStatusService(
         DeliveryStatus.IN_ANALYSIS,
         DeliveryAuditLogEvent.START_ANALYSIS,
+        AuditLogMessage.START_ANALYSIS,
         deliveryAuditLogClient,
         deliveryRepository,
         validateDeliveryDraftService

@@ -5,4 +5,5 @@ enum class DeliveryAuditLogEvent {
     UPDATE_DRAFT,
     SUBMIT,
     START_ANALYSIS,
+    APPROVE,
 }
