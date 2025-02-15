@@ -5,5 +5,4 @@ import io.micronaut.data.annotation.Repository
 import io.micronaut.data.jpa.repository.JpaRepository
 
 @Repository
-interface DeliveryRepository : JpaRepository<Delivery, Long> {
-}
+interface DeliveryRepository : JpaRepository<Delivery, Long>

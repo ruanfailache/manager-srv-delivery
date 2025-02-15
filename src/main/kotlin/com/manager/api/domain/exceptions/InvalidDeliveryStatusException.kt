@@ -1,3 +1,3 @@
 package com.manager.api.domain.exceptions
 
-class InvalidDeliveryStatusException : RuntimeException("Invalid delivery status")
+class InvalidDeliveryStatusException : RuntimeException("Entrega com estado inválido")

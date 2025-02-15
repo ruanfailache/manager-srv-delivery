@@ -1,6 +1,7 @@
 package com.manager.api.domain.entities
 
 import com.manager.api.domain.enums.DeliveryStatus
+import com.manager.api.domain.exceptions.InvalidDeliveryStatusException
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
