@@ -5,20 +5,20 @@ import com.manager.api.domain.enums.DeliveryStatus
 import com.manager.api.domain.exceptions.DeliveryNotFoundException
 import com.manager.api.domain.exceptions.InvalidDeliveryStatusException
 import com.manager.api.domain.repositories.DeliveryRepository
-import com.manager.api.services.ValidateDeliveryDraftService
+import com.manager.api.services.FindAndValidateDeliveryService
 import jakarta.inject.Singleton
 
 @Singleton
-class ValidateDeliveryDraftServiceImpl(
-    private val deliveryRepository: DeliveryRepository
-) : ValidateDeliveryDraftService {
-    override fun execute(deliveryId: Long): Delivery {
+class FindAndValidateDeliveryServiceImpl(private val deliveryRepository: DeliveryRepository) : FindAndValidateDeliveryService {
+
+    override fun onUpdateStatus(deliveryId: Long, previousStatus: DeliveryStatus): Delivery {
         val foundDelivery = deliveryRepository.findById(deliveryId).orElseThrow {
             DeliveryNotFoundException()
         }
-        if (foundDelivery.status != DeliveryStatus.DRAFT) {
+        if (foundDelivery.status != previousStatus) {
             throw InvalidDeliveryStatusException()
         }
         return foundDelivery
     }
+
 }

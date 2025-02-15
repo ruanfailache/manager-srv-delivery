@@ -5,6 +5,6 @@ enum class DeliveryStatus {
     SUBMITTED,
     IN_ANALYSIS,
     APPROVED,
-    RETURNED,
+    CHANGES_REQUESTED,
     REJECTED,
 }

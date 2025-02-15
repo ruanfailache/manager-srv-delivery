@@ -3,11 +3,12 @@ package com.manager.api.services.impl
 import com.manager.api.clients.DeliveryAuditLogClient
 import com.manager.api.domain.constants.AuditLogMessage
 import com.manager.api.domain.enums.DeliveryAuditLogEvent
+import com.manager.api.domain.enums.DeliveryStatus
 import com.manager.api.domain.repositories.DeliveryRepository
 import com.manager.api.domain.requests.RegisterDeliveryAuditLogRequest
 import com.manager.api.domain.requests.SaveDeliveryDraftRequest
 import com.manager.api.services.UpdateDeliveryDraftService
-import com.manager.api.services.ValidateDeliveryDraftService
+import com.manager.api.services.FindAndValidateDeliveryService
 import io.micronaut.transaction.annotation.Transactional
 import jakarta.inject.Singleton
 
@@ -15,12 +16,12 @@ import jakarta.inject.Singleton
 class UpdateDeliveryDraftServiceImpl(
     private val deliveryAuditLogClient: DeliveryAuditLogClient,
     private val deliveryRepository: DeliveryRepository,
-    private val validateDeliveryDraftService: ValidateDeliveryDraftService
+    private val findAndValidateDeliveryService: FindAndValidateDeliveryService
 ) : UpdateDeliveryDraftService {
 
     @Transactional
-    override fun execute(userId: Long, deliveryId: Long, request: SaveDeliveryDraftRequest) {
-        val foundDelivery = validateDeliveryDraftService.execute(deliveryId)
+    override fun updateDraft(userId: Long, deliveryId: Long, request: SaveDeliveryDraftRequest) {
+        val foundDelivery = findAndValidateDeliveryService.onUpdateStatus(deliveryId, DeliveryStatus.DRAFT)
         val mappedDelivery = request.updateDelivery(foundDelivery)
         val deliveryAuditLogRequest = buildDeliveryAuditLogRequest(deliveryId, userId)
         deliveryRepository.update(mappedDelivery)
