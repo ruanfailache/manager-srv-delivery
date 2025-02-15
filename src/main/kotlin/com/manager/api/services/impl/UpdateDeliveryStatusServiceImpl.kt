@@ -30,6 +30,15 @@ class UpdateDeliveryStatusServiceImpl(
     }
 
     @Transactional
+    override fun cancelSubmission(userId: Long, deliveryId: Long) {
+        val delivery = findDeliveryService.findOrThrow(deliveryId)
+        validateDeliveryService.validateStatusAndRequester(delivery, DeliveryStatus.SUBMITTED, userId)
+        delivery.status = DeliveryStatus.DRAFT
+        deliveryRepository.update(delivery)
+        registerAuditLog(deliveryId, userId, DeliveryAuditLogEvent.CANCEL_SUBMISSION, AuditLogMessage.CANCEL_SUBMISSION)
+    }
+
+    @Transactional
     override fun startAnalysis(userId: Long, deliveryId: Long) {
         val delivery = findDeliveryService.findOrThrow(deliveryId)
         validateDeliveryService.validateStatus(delivery, DeliveryStatus.SUBMITTED)

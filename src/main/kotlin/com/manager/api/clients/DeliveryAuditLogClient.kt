@@ -3,6 +3,8 @@ package com.manager.api.clients
 import com.manager.api.domain.requests.RegisterDeliveryAuditLogRequest
 import com.manager.api.domain.responses.RegisterDeliveryAuditLogResponse
 import io.micronaut.http.annotation.Body
+import io.micronaut.http.annotation.Delete
+import io.micronaut.http.annotation.PathVariable
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.client.annotation.Client
 
@@ -10,4 +12,7 @@ import io.micronaut.http.client.annotation.Client
 interface DeliveryAuditLogClient {
     @Post()
     fun register(@Body() request: RegisterDeliveryAuditLogRequest): RegisterDeliveryAuditLogResponse
+
+    @Delete("/{deliveryId}")
+    fun delete(@PathVariable deliveryId: Long)
 }
