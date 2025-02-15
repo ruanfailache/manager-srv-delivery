@@ -3,6 +3,8 @@ package com.manager.api.services.impl
 import com.manager.api.domain.entities.Delivery
 import com.manager.api.domain.exceptions.DeliveryNotFoundException
 import com.manager.api.domain.repositories.DeliveryRepository
+import com.manager.api.domain.responses.FindAllDeliveriesRequest
+import com.manager.api.domain.specifications.DeliverySpecification
 import com.manager.api.services.FindDeliveryService
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
@@ -13,12 +15,9 @@ class FindDeliveryServiceImpl(
     private val deliveryRepository: DeliveryRepository
 ) : FindDeliveryService {
 
-    override fun findAll(): List<Delivery> {
-        return deliveryRepository.findAll()
-    }
-
-    override fun findAll(pageable: Pageable): Page<Delivery> {
-        return deliveryRepository.findAll(pageable)
+    override fun findAll(request: FindAllDeliveriesRequest, pageable: Pageable): Page<Delivery> {
+        val specification = DeliverySpecification.fromFindAllRequest(request)
+        return deliveryRepository.findAll(specification, pageable)
     }
 
     override fun findOrThrow(deliveryId: Long): Delivery {
@@ -26,5 +25,4 @@ class FindDeliveryServiceImpl(
             DeliveryNotFoundException()
         }
     }
-
 }
