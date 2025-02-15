@@ -1,5 +1,5 @@
 package com.manager.api.services
 
 interface DeleteDeliveryDraftService {
-    fun delete(userId: Long, deliveryId: Long)
+    fun delete(bearerToken: String, userId: Long, deliveryId: Long)
 }

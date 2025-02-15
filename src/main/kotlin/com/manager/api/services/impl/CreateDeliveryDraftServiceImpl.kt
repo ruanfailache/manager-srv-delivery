@@ -18,16 +18,15 @@ class CreateDeliveryDraftServiceImpl(
 ) : CreateDeliveryDraftService {
 
     @Transactional
-    override fun create(userId: Long, request: SaveDeliveryDraftRequest) {
+    override fun create(bearerToken: String, userId: Long, request: SaveDeliveryDraftRequest) {
         val mappedEntity = request.createDelivery(userId)
         val savedEntity = deliveryRepository.save(mappedEntity)
-        val auditLogRequest = buildDeliveryAuditLogRequest(savedEntity, userId)
-        deliveryAuditLogClient.register(auditLogRequest)
+        val auditLogRequest = buildDeliveryAuditLogRequest(savedEntity)
+        deliveryAuditLogClient.register(bearerToken, auditLogRequest)
     }
 
-    private fun buildDeliveryAuditLogRequest(savedEntity: Delivery, userId: Long) = RegisterDeliveryAuditLogRequest(
+    private fun buildDeliveryAuditLogRequest(savedEntity: Delivery) = RegisterDeliveryAuditLogRequest(
         deliveryId = savedEntity.id!!,
-        userId = userId,
         event = DeliveryAuditLogEvent.CREATE_DRAFT,
         description = AuditLogMessage.CREATE_DRAFT
     )

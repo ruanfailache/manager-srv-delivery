@@ -22,18 +22,17 @@ class UpdateDeliveryDraftServiceImpl(
 ) : UpdateDeliveryDraftService {
 
     @Transactional
-    override fun updateDraft(userId: Long, deliveryId: Long, request: SaveDeliveryDraftRequest) {
+    override fun updateDraft(bearerToken: String, userId: Long, deliveryId: Long, request: SaveDeliveryDraftRequest) {
         val delivery = findDeliveryService.findOrThrow(deliveryId)
         validateDeliveryService.validateStatusAndRequester(delivery, DeliveryStatus.DRAFT, userId)
         val updatedDelivery = request.updateDelivery(delivery)
         deliveryRepository.update(updatedDelivery)
-        val auditLogRequest = buildAuditLogRequest(deliveryId, userId)
-        deliveryAuditLogClient.register(auditLogRequest)
+        val auditLogRequest = buildAuditLogRequest(deliveryId)
+        deliveryAuditLogClient.register(bearerToken, auditLogRequest)
     }
 
-    private fun buildAuditLogRequest(deliveryId: Long, userId: Long) = RegisterDeliveryAuditLogRequest(
+    private fun buildAuditLogRequest(deliveryId: Long) = RegisterDeliveryAuditLogRequest(
         deliveryId = deliveryId,
-        userId = userId,
         event = DeliveryAuditLogEvent.UPDATE_DRAFT,
         description = AuditLogMessage.UPDATE_DRAFT
     )

@@ -18,11 +18,11 @@ class DeleteDeliveryDraftServiceImpl(
 ) : DeleteDeliveryDraftService {
 
     @Transactional
-    override fun delete(userId: Long, deliveryId: Long) {
+    override fun delete(bearerToken: String, userId: Long, deliveryId: Long) {
         val delivery = findDeliveryService.findOrThrow(deliveryId)
         validateDeliveryService.validateStatusAndRequester(delivery, DeliveryStatus.DRAFT, userId)
         deliveryRepository.delete(delivery)
-        deliveryAuditLogClient.delete(deliveryId)
+        deliveryAuditLogClient.delete(bearerToken, deliveryId)
     }
 
 }

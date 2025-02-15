@@ -21,25 +21,25 @@ class UpdateDeliveryStatusServiceImpl(
 ) : UpdateDeliveryStatusService {
 
     @Transactional
-    override fun submit(userId: Long, deliveryId: Long) {
+    override fun submit(bearerToken: String, userId: Long, deliveryId: Long) {
         val delivery = findDeliveryService.findOrThrow(deliveryId)
         validateDeliveryService.validateStatusAndRequester(delivery, DeliveryStatus.DRAFT, userId)
         delivery.status = DeliveryStatus.SUBMITTED
         deliveryRepository.update(delivery)
-        registerAuditLog(deliveryId, userId, DeliveryAuditLogEvent.SUBMIT_DRAFT, AuditLogMessage.SUBMIT_DRAFT)
+        registerAuditLog(bearerToken, deliveryId, AuditLogMessage.SUBMIT_DRAFT, DeliveryAuditLogEvent.SUBMIT_DRAFT)
     }
 
     @Transactional
-    override fun cancelSubmission(userId: Long, deliveryId: Long) {
+    override fun cancelSubmission(bearerToken: String, userId: Long, deliveryId: Long) {
         val delivery = findDeliveryService.findOrThrow(deliveryId)
         validateDeliveryService.validateStatusAndRequester(delivery, DeliveryStatus.SUBMITTED, userId)
         delivery.status = DeliveryStatus.DRAFT
         deliveryRepository.update(delivery)
-        registerAuditLog(deliveryId, userId, DeliveryAuditLogEvent.CANCEL_SUBMISSION, AuditLogMessage.CANCEL_SUBMISSION)
+        registerAuditLog(bearerToken, deliveryId, AuditLogMessage.CANCEL_SUBMIT, DeliveryAuditLogEvent.CANCEL_SUBMIT)
     }
 
     @Transactional
-    override fun startAnalysis(userId: Long, deliveryId: Long) {
+    override fun startAnalysis(bearerToken: String, userId: Long, deliveryId: Long) {
         val delivery = findDeliveryService.findOrThrow(deliveryId)
         validateDeliveryService.validateStatus(delivery, DeliveryStatus.SUBMITTED)
 
@@ -48,45 +48,48 @@ class UpdateDeliveryStatusServiceImpl(
 
         deliveryRepository.update(delivery)
 
-        registerAuditLog(deliveryId, userId, DeliveryAuditLogEvent.START_ANALYSIS, AuditLogMessage.START_ANALYSIS)
+        registerAuditLog(bearerToken, deliveryId, AuditLogMessage.START_ANALYSIS, DeliveryAuditLogEvent.START_ANALYSIS)
     }
 
     @Transactional
-    override fun approve(userId: Long, deliveryId: Long) {
+    override fun approve(bearerToken: String, userId: Long, deliveryId: Long) {
         val delivery = findDeliveryService.findOrThrow(deliveryId)
         validateDeliveryService.validateStatusAndReviewer(delivery, DeliveryStatus.IN_ANALYSIS, userId)
         delivery.status = DeliveryStatus.APPROVED
         deliveryRepository.update(delivery)
-        registerAuditLog(deliveryId, userId, DeliveryAuditLogEvent.APPROVE, AuditLogMessage.APPROVE)
+        registerAuditLog(bearerToken, deliveryId, AuditLogMessage.APPROVE, DeliveryAuditLogEvent.APPROVE)
     }
 
     @Transactional
-    override fun reject(userId: Long, deliveryId: Long) {
+    override fun reject(bearerToken: String, userId: Long, deliveryId: Long) {
         val delivery = findDeliveryService.findOrThrow(deliveryId)
         validateDeliveryService.validateStatusAndReviewer(delivery, DeliveryStatus.IN_ANALYSIS, userId)
         delivery.status = DeliveryStatus.REJECTED
         deliveryRepository.update(delivery)
-        registerAuditLog(deliveryId, userId, DeliveryAuditLogEvent.REJECT, AuditLogMessage.REJECT)
+        registerAuditLog(bearerToken, deliveryId, AuditLogMessage.REJECT, DeliveryAuditLogEvent.REJECT)
     }
 
     @Transactional
-    override fun requestChanges(userId: Long, deliveryId: Long, description: String) {
+    override fun requestChanges(bearerToken: String, userId: Long, deliveryId: Long, description: String) {
         val delivery = findDeliveryService.findOrThrow(deliveryId)
         validateDeliveryService.validateStatusAndReviewer(delivery, DeliveryStatus.IN_ANALYSIS, userId)
         delivery.status = DeliveryStatus.CHANGES_REQUESTED
         deliveryRepository.update(delivery)
-        registerAuditLog(deliveryId, userId, DeliveryAuditLogEvent.REQUEST_CHANGES, description)
+        registerAuditLog(bearerToken, deliveryId, description, DeliveryAuditLogEvent.REQUEST_CHANGES)
     }
 
-    private fun registerAuditLog(deliveryId: Long, userId: Long, event: DeliveryAuditLogEvent, description: String) {
-        deliveryAuditLogClient.register(
-            RegisterDeliveryAuditLogRequest(
-                deliveryId = deliveryId,
-                userId = userId,
-                event = event,
-                description = description
-            )
+    private fun registerAuditLog(
+        bearerToken: String,
+        deliveryId: Long,
+        description: String,
+        event: DeliveryAuditLogEvent,
+    ) = deliveryAuditLogClient.register(
+        bearerToken,
+        RegisterDeliveryAuditLogRequest(
+            deliveryId = deliveryId,
+            event = event,
+            description = description
         )
-    }
+    )
 
 }
