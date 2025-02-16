@@ -3,7 +3,7 @@ package com.manager.api.services.impl
 import com.manager.api.domain.entities.Delivery
 import com.manager.api.domain.exceptions.DeliveryNotFoundException
 import com.manager.api.domain.repositories.DeliveryRepository
-import com.manager.api.domain.responses.FindAllDeliveriesRequest
+import com.manager.api.domain.requests.FindAllDeliveriesRequest
 import com.manager.api.domain.specifications.DeliverySpecification
 import com.manager.api.services.FindDeliveryService
 import io.micronaut.data.model.Page

@@ -42,12 +42,9 @@ class UpdateDeliveryStatusServiceImpl(
     override fun startAnalysis(bearerToken: String, userId: Long, deliveryId: Long) {
         val delivery = findDeliveryService.findOrThrow(deliveryId)
         validateDeliveryService.validateStatus(delivery, DeliveryStatus.SUBMITTED)
-
         delivery.reviewerId = userId
         delivery.status = DeliveryStatus.IN_ANALYSIS
-
         deliveryRepository.update(delivery)
-
         registerAuditLog(bearerToken, deliveryId, AuditLogMessage.START_ANALYSIS, DeliveryAuditLogEvent.START_ANALYSIS)
     }
 

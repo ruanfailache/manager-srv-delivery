@@ -1,23 +1,14 @@
 package com.manager.api.domain.requests
 
-import com.manager.api.domain.entities.Delivery
-import com.manager.api.domain.enums.DeliveryStatus
+import io.swagger.v3.oas.annotations.media.Schema
+import jakarta.validation.constraints.NotBlank
 
 data class SaveDeliveryDraftRequest(
+    @NotBlank
+    @Schema(description = "Título da entrega")
     val title: String,
+
+    @NotBlank
+    @Schema(description = "Descrição da entrega")
     val description: String,
-) {
-
-    fun createDelivery(userId: Long) = Delivery(
-        title = title,
-        description = description,
-        requesterId = userId,
-        status = DeliveryStatus.DRAFT,
-    )
-
-    fun updateDelivery(delivery: Delivery) = delivery.copy(
-        title = title,
-        description = description,
-    )
-
-}
+)

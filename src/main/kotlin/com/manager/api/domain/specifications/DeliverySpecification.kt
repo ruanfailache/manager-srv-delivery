@@ -2,7 +2,7 @@ package com.manager.api.domain.specifications
 
 import com.manager.api.domain.entities.Delivery
 import com.manager.api.domain.enums.DeliveryStatus
-import com.manager.api.domain.responses.FindAllDeliveriesRequest
+import com.manager.api.domain.requests.FindAllDeliveriesRequest
 import io.micronaut.data.repository.jpa.criteria.PredicateSpecification
 import jakarta.persistence.criteria.Predicate
 
