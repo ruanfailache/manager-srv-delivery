@@ -6,9 +6,11 @@ import com.manager.api.domain.repositories.DeliveryRepository
 import com.manager.api.services.DeleteDeliveryDraftService
 import com.manager.api.services.FindDeliveryService
 import com.manager.api.services.ValidateDeliveryService
+import io.micronaut.aop.Around
 import io.micronaut.transaction.annotation.Transactional
 import jakarta.inject.Singleton
 
+@Around
 @Singleton
 class DeleteDeliveryDraftServiceImpl(
     private val deliveryAuditLogClient: DeliveryAuditLogClient,

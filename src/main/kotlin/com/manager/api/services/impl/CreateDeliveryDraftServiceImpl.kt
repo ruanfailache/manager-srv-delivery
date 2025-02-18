@@ -9,9 +9,11 @@ import com.manager.api.domain.requests.RegisterDeliveryAuditLogRequest
 import com.manager.api.domain.requests.SaveDeliveryDraftRequest
 import com.manager.api.mappers.DeliveryMapper
 import com.manager.api.services.CreateDeliveryDraftService
+import io.micronaut.aop.Around
 import io.micronaut.transaction.annotation.Transactional
 import jakarta.inject.Singleton
 
+@Around
 @Singleton
 class CreateDeliveryDraftServiceImpl(
     private val deliveryAuditLogClient: DeliveryAuditLogClient,

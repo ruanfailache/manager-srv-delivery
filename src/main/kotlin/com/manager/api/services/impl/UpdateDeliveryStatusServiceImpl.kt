@@ -11,9 +11,11 @@ import com.manager.api.domain.requests.RequestDeliveryChangesRequest
 import com.manager.api.services.UpdateDeliveryStatusService
 import com.manager.api.services.FindDeliveryService
 import com.manager.api.services.ValidateDeliveryService
+import io.micronaut.aop.Around
 import io.micronaut.transaction.annotation.Transactional
 import jakarta.inject.Singleton
 
+@Around
 @Singleton
 class UpdateDeliveryStatusServiceImpl(
     private val deliveryAuditLogClient: DeliveryAuditLogClient,

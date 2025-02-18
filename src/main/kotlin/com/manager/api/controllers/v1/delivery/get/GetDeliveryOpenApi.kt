@@ -24,6 +24,6 @@ interface GetDeliveryOpenApi {
     @ApiResponse(responseCode = "200", description = "Entregas encontradas")
     @ApiResponse(responseCode = "400", description = "Requisição inválida")
     @ApiResponse(responseCode = "500", description = "Erro interno")
-    fun findAllDeliveries(request: FindAllDeliveriesRequest, pageable: Pageable): HttpResponse<Page<DeliveryResponse>>
+    fun findAllDeliveries(request: FindAllDeliveriesRequest?, pageable: Pageable): HttpResponse<Page<DeliveryResponse>>
 
 }

@@ -15,7 +15,8 @@ class FindDeliveryServiceImpl(
     private val deliveryRepository: DeliveryRepository
 ) : FindDeliveryService {
 
-    override fun findAll(request: FindAllDeliveriesRequest, pageable: Pageable): Page<Delivery> {
+    override fun findAll(request: FindAllDeliveriesRequest?, pageable: Pageable): Page<Delivery> {
+        if (request == null) return deliveryRepository.findAll(pageable)
         val specification = DeliverySpecification.fromFindAllRequest(request)
         return deliveryRepository.findAll(specification, pageable)
     }

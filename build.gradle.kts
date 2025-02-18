@@ -12,7 +12,7 @@ plugins {
 version = "0.0.1"
 group = "com.manager.api"
 
-val kotlinVersion = project.properties.get("kotlinVersion")
+val kotlinVersion = project.properties["kotlinVersion"]
 
 repositories {
     mavenCentral()
@@ -23,13 +23,14 @@ dependencies {
     ksp("io.micronaut.serde:micronaut-serde-processor")
 
     implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
+    implementation("io.micronaut.data:micronaut-data-jdbc")
     implementation("io.micronaut.openapi:micronaut-openapi")
     implementation("io.micronaut.openapi:micronaut-openapi-annotations")
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
     implementation("io.micronaut.serde:micronaut-serde-jackson")
     implementation("io.micronaut.validation:micronaut-validation")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
 
     annotationProcessor("io.micronaut.validation:micronaut-validation-processor")
 
@@ -42,15 +43,13 @@ dependencies {
     testImplementation("io.micronaut:micronaut-http-client")
 }
 
-
 application {
-    mainClass = "com.manager.api.ApplicationKt"
+    mainClass.set("com.manager.api.ApplicationKt")
 }
 
 java {
     sourceCompatibility = JavaVersion.toVersion("21")
 }
-
 
 graalvmNative.toolchainDetection = false
 
@@ -62,22 +61,17 @@ micronaut {
         annotations("com.manager.api.*")
     }
     aot {
-        // Please review carefully the optimizations enabled below
-        // Check https://micronaut-projects.github.io/micronaut-aot/latest/guide/ for more details
-        optimizeServiceLoading = false
-        convertYamlToJava = false
-        precomputeOperations = true
-        cacheEnvironment = true
-        optimizeClassLoading = true
-        deduceEnvironment = true
-        optimizeNetty = true
-        replaceLogbackXml = true
+        optimizeServiceLoading.set(false)
+        convertYamlToJava.set(false)
+        precomputeOperations.set(true)
+        cacheEnvironment.set(true)
+        optimizeClassLoading.set(true)
+        deduceEnvironment.set(true)
+        optimizeNetty.set(true)
+        replaceLogbackXml.set(true)
     }
 }
 
-
 tasks.named<io.micronaut.gradle.docker.NativeImageDockerfile>("dockerfileNative") {
-    jdkVersion = "21"
+    jdkVersion.set("21")
 }
-
-

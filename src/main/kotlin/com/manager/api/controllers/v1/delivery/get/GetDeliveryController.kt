@@ -25,7 +25,7 @@ class GetDeliveryController(
 
     @Get
     override fun findAllDeliveries(
-        request: FindAllDeliveriesRequest,
+        request: FindAllDeliveriesRequest?,
         pageable: Pageable
     ): HttpResponse<Page<DeliveryResponse>> {
         val deliveries = findDeliveryService.findAll(request, pageable)
