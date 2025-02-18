@@ -1,4 +1,4 @@
-package com.manager.api.controllers.v1.delivery
+package com.manager.api.controllers.v1.delivery.get
 
 import com.manager.api.domain.requests.FindAllDeliveriesRequest
 import com.manager.api.domain.responses.DeliveryResponse

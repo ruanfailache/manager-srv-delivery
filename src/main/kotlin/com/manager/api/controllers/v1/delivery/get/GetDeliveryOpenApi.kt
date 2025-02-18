@@ -1,4 +1,4 @@
-package com.manager.api.controllers.v1.delivery
+package com.manager.api.controllers.v1.delivery.get
 
 import com.manager.api.domain.requests.FindAllDeliveriesRequest
 import com.manager.api.domain.responses.DeliveryResponse
@@ -8,8 +8,11 @@ import io.micronaut.http.HttpResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.tags.Tag
 
+@Tag(name = "Entregas")
 interface GetDeliveryOpenApi {
+
     @Operation(summary = "Busca uma entrega pelo identificador")
     @ApiResponse(responseCode = "200", description = "Entrega encontrada")
     @ApiResponse(responseCode = "400", description = "Requisição inválida")
@@ -22,4 +25,5 @@ interface GetDeliveryOpenApi {
     @ApiResponse(responseCode = "400", description = "Requisição inválida")
     @ApiResponse(responseCode = "500", description = "Erro interno")
     fun findAllDeliveries(request: FindAllDeliveriesRequest, pageable: Pageable): HttpResponse<Page<DeliveryResponse>>
+
 }

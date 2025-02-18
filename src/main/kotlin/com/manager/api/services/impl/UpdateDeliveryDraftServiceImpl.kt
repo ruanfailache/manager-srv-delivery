@@ -2,6 +2,7 @@ package com.manager.api.services.impl
 
 import com.manager.api.clients.DeliveryAuditLogClient
 import com.manager.api.domain.constants.AuditLogMessage
+import com.manager.api.domain.entities.Delivery
 import com.manager.api.domain.enums.DeliveryAuditLogEvent
 import com.manager.api.domain.enums.DeliveryStatus
 import com.manager.api.domain.repositories.DeliveryRepository
@@ -24,13 +25,14 @@ class UpdateDeliveryDraftServiceImpl(
 ) : UpdateDeliveryDraftService {
 
     @Transactional
-    override fun updateDraft(bearerToken: String, userId: Long, deliveryId: Long, request: SaveDeliveryDraftRequest) {
+    override fun updateDraft(bearerToken: String, userId: Long, deliveryId: Long, request: SaveDeliveryDraftRequest): Delivery {
         val delivery = findDeliveryService.findOrThrow(deliveryId)
         validateDeliveryService.validateStatusAndRequester(delivery, DeliveryStatus.DRAFT, userId)
         val updatedDelivery = deliveryMapper.updateDraft(delivery, request)
-        deliveryRepository.update(updatedDelivery)
+        val savedDelivery = deliveryRepository.update(updatedDelivery)
         val auditLogRequest = buildAuditLogRequest(deliveryId)
         deliveryAuditLogClient.register(bearerToken, auditLogRequest)
+        return savedDelivery
     }
 
     private fun buildAuditLogRequest(deliveryId: Long) = RegisterDeliveryAuditLogRequest(
